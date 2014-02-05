@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Estadisticas</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" media="screen" href="site_media/css/reset.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="site_media/css/grid_24.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="site_media/css/style.css">
+    <script src="site_media/js/jquery-1.7.min.js"></script>
+    <script src="site_media/js/jquery.easing.1.3.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="site_media/js/jquery.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['timeline']}]}"></script>
+    
+    <script type="text/javascript">
+	    var pjson = '';
+	    $(document).on('ready',function(){
+                var getJson = '';                
+                $.ajax({                    
+                    type:"GET",
+                    contentType:"application/json; charset=utf-8",
+                    dateType:"json",                    
+                    url:"/ws/json",
+                    async: false,
+                    success: function(Response){  
+                        getJson = Response;
+			pjson = getJson;
+                    },                    
+                });         
+		
+            });  
+	    google.load("visualization", "1", {packages:["corechart"]});
+	    google.setOnLoadCallback(drawChart);
+	    function drawChart() {
+		
+		var datos = [['Universidad', 'Cantidad']];
+		var datos1 = [];		
+		for(var i in pjson) {		    
+		    var build = pjson[i].fields;
+		    var uni = build.universidad;
+		    datos1.push(uni)		    
+		}
+		
+		for (var i in datos1) {
+		    var cont = 1;
+		    var pos = 0;
+		    for (var x in datos) {			
+			if (datos[x][0] == datos1[i]) {			    
+			    cont += 1;
+			    pos = x;
+			}
+		    }
+		    if (cont == 1) {
+			datos.push([datos1[i], cont])
+		    }else{
+			datos[x][1] = cont
+		    }
+		    
+		}
+		
+		var data = google.visualization.arrayToDataTable(datos);		
+		
+		
+		var options = {
+		    title: 'Universidades',
+		    is3D: true,
+		};
+		
+		var optionsbar = {
+		    title: 'Monumentos',
+		    vAxis: {title: 'Universidad',  titleTextStyle: {color: 'red'}}
+		};
+		
+		var chart = new google.visualization.PieChart(document.getElementById('piechart'));		
+		chart.draw(data, options);
+		var barchart = new google.visualization.BarChart(document.getElementById('chart_div'));
+		barchart.draw(data,optionsbar)
+		
+		
+	    }
+      
+	    
+        </script>
+	<!--[if lt IE 8]>
+       <div style=' clear: both; text-align:center; position: relative;'>
+         <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+           <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+        </a>
+      </div>
+    <![endif]-->
+    <!--[if lt IE 9]>
+   		<script type="text/javascript" src="js/html5.js"></script>
+    	<link rel="stylesheet" type="text/css" media="screen" href="site_media/css/ie.css">
+	<![endif]-->
+</head>
+<body>
+<div class="bg-1">
+  <!--==============================header=================================-->
+    <header>
+    	<div class="main">
+        	<h1 class="logo-sub-pages"><a href="index.html"><img src="site_media/images/logo.png" alt=""></a></h1>
+            <nav class="nav-sub-pages">  
+                <ul class="menu">
+                   <li><a href="index.html">Principal</a></li>
+                    <li><a href="services.html">Mapa</a></li>
+                    <li class="current"><a href="staff.html">Monumentos</a></li>
+                    <li class="left-1"><a href="consultations.html">Lugares</a></li>
+                    <li><a href="prices.html">Quienes Somos</a></li>
+                    <li><a href="contacts.html">Estadisticas</a></li>
+                </ul>
+                <div class="clear"></div>
+             </nav>
+        </div>
+    </header>  
+    
+     
+  <!--==============================content================================-->
+    <section id="content"><div class="ic"></div>
+       <div class="bg-3 bot-3">
+           <div class="container_24">
+                <div class="grid_24">
+                    <div class="banner-bg"><a href="#"></a></div>
+                </div>  
+                <div class="clear"></div> 
+           </div>
+       </div>   
+       <div class="bg-5 bot-1">      
+           <div class="container_24">
+                <div class="grid_24">
+                    <div class="line"></div>
+                 </div>
+                
+                    <h2 align="center">VISUALIZACIÓN DE GRÁFICAS ESTADÍSTICAS </h2>
+                    <dl class="adr">
+                        <dt align="center" class="clr-1"><strong><i>Monumentos de la Ciudad de Loja</i></strong></dt>                        
+                    </dl> 
+			<table>
+			    <div id="piechart" style="height: 200px;width: 800px" >
+			</table>
+			<table>
+			    <div id="chart_div" style="width: 800px; height: 200px;"></div>                  
+			</table>
+			
+			
+                <div class="clear"></div>
+           </div>
+       </div>  
+       <div class="bg-6 bot-4">
+       	 <div class="container_24">
+            <div class="grid_24">
+                <div class="line"></div>
+             </div>
+             <div class="clear"></div>
+         </div>        
+       </div>      
+    </section> 
+</div>       
+</body>
+</html>
